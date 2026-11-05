@@ -10066,6 +10066,19 @@
         "tslib": "2.6.2",
       },
     },
+    "packages/pieces/community/whapi": {
+      "name": "@activepieces/piece-whapi",
+      "version": "0.0.1",
+      "dependencies": {
+        "@activepieces/core-piece-types": "workspace:*",
+        "@activepieces/core-utils": "workspace:*",
+        "@activepieces/pieces-common": "workspace:*",
+        "@activepieces/pieces-framework": "workspace:*",
+      },
+      "devDependencies": {
+        "tslib": "2.6.2",
+      },
+    },
     "packages/pieces/community/what-converts": {
       "name": "@activepieces/piece-what-converts",
       "version": "0.1.7",
@@ -12978,6 +12991,8 @@
     "@activepieces/piece-week-done": ["@activepieces/piece-week-done@workspace:packages/pieces/community/week-done"],
 
     "@activepieces/piece-weekdone": ["@activepieces/piece-weekdone@workspace:packages/pieces/community/weekdone"],
+
+    "@activepieces/piece-whapi": ["@activepieces/piece-whapi@workspace:packages/pieces/community/whapi"],
 
     "@activepieces/piece-what-converts": ["@activepieces/piece-what-converts@workspace:packages/pieces/community/what-converts"],
 

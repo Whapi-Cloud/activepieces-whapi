@@ -1543,6 +1543,9 @@
       "@activepieces/piece-whatsscale": [
         "packages/pieces/community/whatsscale/src/index.ts"
       ],
+      "@activepieces/piece-whapi": [
+        "packages/pieces/community/whapi/src/index.ts"
+      ],
       "@activepieces/piece-wistia": [
         "packages/pieces/community/wistia/src/index.ts"
       ],
