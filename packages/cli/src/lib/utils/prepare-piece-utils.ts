@@ -12,6 +12,14 @@ function copyPackageJson({ piecePath, distPath }: PieceDistPaths): void {
     copyFileSync(srcPackageJson, join(distPath, 'package.json'))
 }
 
+function copyReadmeForPublish({ piecePath, distPath }: PieceDistPaths): void {
+    const srcReadme = join(piecePath, 'README.md')
+    if (!existsSync(srcReadme)) {
+        return
+    }
+    copyFileSync(srcReadme, join(distPath, 'README.md'))
+}
+
 function copyI18nAssets({ piecePath, distPath }: PieceDistPaths): void {
     const i18nSrc = join(piecePath, 'src', 'i18n')
     if (!existsSync(i18nSrc)) {
@@ -37,6 +45,7 @@ async function preparePieceDistForPublish(piecePath: string): Promise<void> {
     const repoRoot = findRepoRoot(piecePath)
     const paths = { piecePath, distPath }
     copyPackageJson(paths)
+    copyReadmeForPublish(paths)
     copyI18nAssets(paths)
 
     const { bundleBytes, rawBytes, external, extraBundleFiles } = await bundlePieceUtils.bundlePiece({ ...paths, repoRoot })
@@ -82,6 +91,9 @@ function rewriteManifestForBundle({ distPath, external, repoRoot, extraBundleFil
     delete json.bundleDeps
     delete json.bundleForkedEntries
     json.files = [bundlePieceUtils.BUNDLE_FILENAME, ...extraBundleFiles, 'package.json', 'src/i18n']
+    if (existsSync(join(distPath, 'README.md'))) {
+        json.files.push('README.md')
+    }
 
     writeFileSync(distPackageJsonPath, JSON.stringify(json, null, 2) + '\n')
 }
