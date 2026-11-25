@@ -82,6 +82,7 @@ jobs:
         run: npx ts-node -r tsconfig-paths/register -P packages/server/engine/tsconfig.lib.json tools/scripts/pieces/publish-pieces-to-npm.ts
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           CHANGED_PIECES: ${{ steps.changed.outputs.changed_dirs }}
 
       - name: Check available memory

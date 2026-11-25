@@ -94,7 +94,17 @@ export const publishNpmPackage = async (path: string): Promise<void> => {
   assertNoUnpublishableDeps(`${outputPath}/package.json`)
   assertNoSemverRanges(`${outputPath}/package.json`)
 
-  const publish = spawnSync('npm', ['publish', '--access', 'public', '--tag', 'latest'], { cwd: outputPath, stdio: ['ignore', 'inherit', 'pipe'], encoding: 'utf8' })
+  const publishArgs = ['publish', '--access', 'public', '--tag', 'latest']
+  const otp = process.env.NPM_OTP
+  if (otp) {
+    publishArgs.push(`--otp=${otp}`)
+  }
+  const publish = spawnSync('npm', publishArgs, {
+    cwd: outputPath,
+    stdio: ['ignore', 'inherit', 'pipe'],
+    encoding: 'utf8',
+    shell: process.platform === 'win32',
+  })
   process.stderr.write(publish.stderr ?? '')
   if (publish.status !== 0) {
     if (publish.stderr?.includes('previously staged version')) {
@@ -102,7 +112,10 @@ export const publishNpmPackage = async (path: string): Promise<void> => {
       return
     }
     if (!isVersionOnRegistry({ name: json.name, version })) {
-      throw new Error(`[publishProject] npm publish failed, path=${path}, version=${version}, exitCode=${publish.status}`)
+      const npmErr = publish.stderr?.trim() || publish.error?.message
+      throw new Error(
+        `[publishProject] npm publish failed, path=${path}, version=${version}, exitCode=${publish.status}${npmErr ? `\n${npmErr}` : ''}`,
+      )
     }
     console.info(`[publishProject] publish failed but version is already on registry, path=${path}, version=${version}`)
     return

@@ -265,3 +265,18 @@ Keep every write short and human, a few tight sentences or a short list, never a
 skimmed, not read.
 
 <!-- /craftspace:brain-guide -->
+
+## Learned User Preferences
+
+- For Whapi npm packages in this fork, prefer the user scope `@whapicloud/...` over `@whapi-cloud/...` (requires npm org) or unscoped names like n8n nodes.
+- Local npm publish after passkey `npm login` often requires OTP (EOTP); prefer granular access tokens for CLI publish, consistent with CI-driven releases for other Whapi packages.
+- Keep project `.npmrc` friendly to local `npm login` by not forcing empty `${NPM_TOKEN}` overrides in the repo root.
+
+## Learned Workspace Facts
+
+- Workspace is the Whapi-Cloud fork `activepieces-whapi` (Activepieces + Whapi piece), path `C:\Works\whapi-activepieces`, remote `Whapi-Cloud/activepieces-whapi`.
+- Whapi piece npm name is `@whapicloud/piece-whapi`; never publish under `@activepieces` publisher scope.
+- Install toolchain: `node tools/scripts/install-bun.js`, then `bun install`; piece checks: `npx turbo run build|lint --filter=@whapicloud/piece-whapi`.
+- Publish piece from repo root: `npm run publish-piece whapi` (directory slug `whapi`, not the npm package name).
+- CI npm auth for piece releases uses `secrets.NPM_TOKEN` plus `NODE_AUTH_TOKEN` in `.github/workflows/release-pieces.yml` after project `.npmrc` auth line was commented for local dev.
+- For GitHub operations on this clone, use `gh` with active account `Whapi-Cloud`.
